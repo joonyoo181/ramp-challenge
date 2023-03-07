@@ -78,15 +78,15 @@ export function App() {
         <div className="RampGrid">
           <Transactions transactions={transactions} />
 
-          {transactions !== null && (
+          {(transactions !== null && paginatedTransactionsUtils.paginated) && (
             <button
               className="RampButton"
-              disabled={paginatedTransactionsUtils.loading || !paginatedTransactionsUtils.nextPageExists}
+              disabled={paginatedTransactionsUtils.loading}
               onClick={async () => {
                 await loadAllTransactions()
               }}
             >
-              {!paginatedTransactionsUtils.nextPageExists ? <>No More Transactions Available</> : <>View More</>}
+              View More
             </button>
           )}
         </div>

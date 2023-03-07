@@ -5,7 +5,7 @@ import { useCustomFetch } from "./useCustomFetch"
 
 export function usePaginatedTransactions(): PaginatedTransactionsResult {
   const { fetchWithCache, loading } = useCustomFetch()
-  const [ nextPageExists, setNextPageExists ]= useState(true)
+  const [ paginated, setPaginated ]= useState(true)
   const [paginatedTransactions, setPaginatedTransactions] = useState<PaginatedResponse<
     Transaction[]
   > | null>(null)
@@ -21,13 +21,14 @@ export function usePaginatedTransactions(): PaginatedTransactionsResult {
     )
 
     setPaginatedTransactions((previousResponse) => {
+      setPaginated(true)
       if (response === null || previousResponse === null) {
         return response
       }
 
       if (response.nextPage === null) {
         console.log('hit')
-        setNextPageExists(false)
+        setPaginated(false)
       }
 
       //concatenate new transactions to the existing transactions
@@ -40,7 +41,8 @@ export function usePaginatedTransactions(): PaginatedTransactionsResult {
 
   const invalidateData = useCallback(() => {
     setPaginatedTransactions(null)
+    setPaginated(false)
   }, [])
 
-  return { data: paginatedTransactions, loading, fetchAll, invalidateData, nextPageExists }
+  return { data: paginatedTransactions, loading, fetchAll, invalidateData, paginated }
 }
