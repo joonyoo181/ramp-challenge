@@ -81,12 +81,12 @@ export function App() {
           {transactions !== null && (
             <button
               className="RampButton"
-              disabled={paginatedTransactionsUtils.loading}
+              disabled={paginatedTransactionsUtils.loading || !paginatedTransactionsUtils.nextPageExists}
               onClick={async () => {
                 await loadAllTransactions()
               }}
             >
-              View More
+              {!paginatedTransactionsUtils.nextPageExists ? <>No More Transactions Available</> : <>View More</>}
             </button>
           )}
         </div>
